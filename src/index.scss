@@ -1,0 +1,278 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+$thumb: '@/assets/thumb.png';
+$primaryColor: #505f4e;
+$secondaryColor: #665345;
+header {
+  background-image: linear-gradient(
+    to right,
+    rgba(78, 124, 50, 1),
+    rgba(102, 83, 69, 0.5)
+  );
+
+  .header-tool {
+    padding: 20px 0 10px;
+    .header-search {
+      padding: 12px 5px 12px 30px;
+      background-color: white;
+      display: inline-flex;
+      flex: 0.5 0 auto;
+      input {
+        flex-grow: 1;
+        background-color: transparent;
+      }
+      & {
+        :focus {
+          outline: none;
+        }
+      }
+      img {
+        width: 20px;
+        height: auto;
+        cursor: pointer;
+      }
+    }
+
+    .header-lang {
+      display: flex;
+      align-items: center;
+      gap: 1px;
+      color: white;
+      margin: 0 120px 0 100px;
+      font-weight: 400;
+    }
+    .header-user {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: white;
+      font-weight: 400;
+    }
+    .header-cart {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      font-weight: 400;
+    }
+  }
+  .header-nav {
+    padding: 17px 12px 25px;
+    li {
+      color: white;
+      font-weight: 600;
+      a {
+        gap: 4px;
+      }
+    }
+  }
+}
+main {
+  background-image: linear-gradient(
+    to right bottom,
+    rgba(248, 244, 240, 1),
+    rgba(189, 222, 183, 1)
+  );
+}
+.bg-register {
+  background-image: linear-gradient(
+    to right bottom,
+    #ffffff,
+    #ffffff,
+    #ffffff,
+    rgba(189, 222, 183, 1)
+  );
+}
+.bg-list {
+  background-image: linear-gradient(
+    to top left,
+    #ffffff,
+    #ffffff,
+    #ffffff,
+    rgba(189, 222, 183, 1)
+  );
+  background-size: cover;
+  background-clip: content-box;
+}
+// .best-sell {
+//   .sell-card:last-of-type {
+//     .sell-info {
+//       .sell-price {
+//         &:last-child {
+//           color: red;
+//         }
+//       }
+//     }
+//   }
+// }
+.tags {
+  .tag-grid {
+    .tag-item:first-child {
+      div {
+        height: 100%;
+        img {
+          height: 100%;
+          width: 100%;
+        }
+      }
+    }
+    .tag-item:first-child {
+      grid-column: 1 / span 2;
+      grid-row: 1 / span 3;
+    }
+  }
+}
+
+.slide {
+  background-image: linear-gradient(
+    to right,
+    rgba(181, 220, 176, 1),
+    rgba(249, 243, 238, 0)
+  );
+  .slide-thumb {
+    background-image: url($thumb);
+    background-size: cover;
+    background-repeat: no-repeat;
+    .thumb-title {
+      padding: 170px 0 0 0;
+      width: 680px;
+      h3 {
+        font-size: 55px;
+        color: $primaryColor;
+        font-weight: 700;
+      }
+      p {
+        color: $secondaryColor;
+        width: 450px;
+        line-height: 20px;
+        font-size: 15px;
+        text-align: left;
+        margin: 25px 0 20px 0;
+      }
+      button {
+        border: 3px solid black;
+        padding: 10px 50px;
+        font-size: 20px;
+        font-weight: 400;
+        transition: 0.3s ease-in-out;
+      }
+      button:hover {
+        color: white;
+        background-color: $primaryColor;
+        transition: 0.3s ease-in-out;
+      }
+    }
+  }
+}
+.list-color-product {
+  background-image: linear-gradient(
+    to right,
+    rgba(181, 220, 176, 1),
+    rgba(249, 243, 238, 0)
+  );
+}
+.detail-info {
+  .detail-tag {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #4e7c32;
+  }
+  .detail-name {
+    margin: 20px 0 23px;
+    font-size: 44px;
+    font-weight: 700;
+    width: 490px;
+  }
+  .detail-desc {
+    color: #68707d;
+    text-align: justify;
+  }
+  .detail-price {
+    .detail-sale-price {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 30px;
+      font-weight: 700;
+      span {
+        font-size: 1rem;
+        padding: 5px 10px;
+        background-color: #ffede0;
+        color: #505f4e;
+        border-radius: 10px;
+      }
+    }
+    .detail-origin-price {
+      font-weight: 700;
+      text-decoration: line-through;
+    }
+  }
+  .detail-action {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0 0 0;
+    .detail-quantity {
+      background-color: #f7f8fd;
+      border-radius: 15px;
+      display: flex;
+      justify-content: space-between;
+      input {
+        all: unset;
+        background-color: transparent;
+        width: 100px;
+        text-align: center;
+        font-weight: 600;
+      }
+      button {
+        width: 50px;
+        height: 55px;
+        font-weight: 700;
+        font-size: 1.25rem;
+      }
+    }
+  }
+}
+footer {
+  color: white;
+  .footer-nav {
+    padding: 30px 0 80px 0;
+    background-color: #053d29;
+    ul {
+      li {
+        gap: 10px;
+        .footer-social {
+          margin: 30px 0 0 0;
+          display: flex;
+          align-items: center;
+          gap: 30px;
+          a {
+            display: inline-block;
+            img {
+              height: auto;
+              width: 15px;
+            }
+          }
+        }
+        span:first-child {
+          font-weight: 600;
+          padding: 0 0 20px 0;
+        }
+      }
+    }
+  }
+  .footer-copyright {
+    padding: 14px 0 16px;
+    background-color: #062f21;
+    font-weight: 500;
+    .footer-scroll {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  }
+}
