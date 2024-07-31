@@ -26,22 +26,22 @@ const Register = () => {
           <h1 className="my-5 text-3xl font-bold text-center">Sign Up</h1>
 
           <div className="mb-3">
-            <label className="form-label" htmlFor="Email">Email</label>
-            <input className="form-control" type="email" placeholder="Email" {...register("email", { required: true })} />
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="Email">Email</label>
+            <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="email" placeholder="Email" {...register("email", { required: true })} />
             <div className="font-bold text-red-600">{errors.email && <p>{errors.email?.message}</p>}</div>
           </div>
           <div className="mb-3">
-            <label className="form-label" htmlFor="Password">Password</label>
-            <input className="form-control" type="password" placeholder="Password" {...register("password", { required: true, minLength: 5 })} />
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="Password">Password</label>
+            <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="password" placeholder="Password" {...register("password", { required: true, minLength: 5 })} />
             <div className="font-bold text-red-600">{errors.password && <p>{errors.password?.message}</p>}</div>
           </div>
           <div className="mb-3">
-            <label className="form-label" htmlFor="confirmPassword">Confirm Password</label>
-            <input className="form-control" placeholder="Confirm" type="password" {...register("confirmPass", { required: true, minLength: 5 })} />
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="confirmPassword">Confirm Password</label>
+            <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Confirm" type="password" {...register("confirmPass", { required: true, minLength: 5 })} />
             <div className="font-bold text-red-600">{errors.confirmPass && <p>{errors.confirmPass?.message}</p>}</div>
           </div>
 
-          <button className="btn btn-primary" type="submit">Register</button>
+          <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="submit">Register</button>
           <p>Already have account, change to <Link className="text-blue-500" to={'/login'}>Log in</Link>!</p>
         </form>
       </div>

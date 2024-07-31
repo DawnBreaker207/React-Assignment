@@ -6,26 +6,34 @@ import { useCategory } from "../../../contexts/categoryContext"
 import { userProduct } from "../../../contexts/productContext"
 import { UploadImage } from "../../../services/upload"
 import productSchema from "../../../validations/productSchema"
+import { useState } from "react"
 
 const ProductAdd = () => {
-  // const [thumbnailUrl, setThumbnailUrl] = useState(null)
+  const [thumbnailUrl, setThumbnailUrl] = useState(null)
   const { addProduct } = userProduct()
   const { state } = useCategory()
-  const { register, formState: { errors }, handleSubmit } = useForm<Product>({ resolver: zodResolver(productSchema) })
+  const { register, formState: { errors }, handleSubmit, setValue } = useForm<Product>({ resolver: zodResolver(productSchema) })
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0]
+      try {
+        const thumbnailUrl = await UploadImage(file)
+        setValue('thumbnail', thumbnailUrl)
+        setThumbnailUrl(thumbnailUrl)
+      }
+      catch (error) {
+        console.log(error);
+
+      }
+    }
+  }
   const handleSubmitForm = async (res: Product) => {
     try {
-      let updateProduct = { ...res }
-      console.log(updateProduct);
-      if (res.thumbnail && res.thumbnail[0]) {
-        const thumbnailUrl = await UploadImage(res.thumbnail[0])
-        console.log(thumbnailUrl);
-
-        updateProduct = { ...updateProduct, thumbnail: thumbnailUrl }
-      }
+      const updateProduct = { ...res }
       addProduct(updateProduct)
+
     } catch (error) {
       console.log(error);
-
     }
   }
   return (
@@ -60,13 +68,14 @@ const ProductAdd = () => {
         </div>
         <div className="mb-3">
           <label className="form-label" htmlFor="thumbnail">Thumbnail</label>
-          <input type="file" placeholder="Link" {...register("thumbnail")} />
-          {/* {thumbnailUrl && (
+          <input type="file" placeholder="Link" onChange={handleFileChange} />
+          {thumbnailUrl && (
             <img src={thumbnailUrl} alt="Product Thumbnail" style={{ maxWidth: "200px", marginTop: "10px" }} />
-          )} */}
+          )}
           <div className="font-bold text-red-600">{errors.thumbnail && <p>{errors.thumbnail?.message}</p>}</div>
         </div>
-        <Button className="w-full" type="primary" htmlType="submit">Submit</Button>
+        {thumbnailUrl && <Button className="w-full" type="primary" htmlType="submit">Submit</Button>
+        }
       </form>
     </section>
   )

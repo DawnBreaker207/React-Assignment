@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
-import { Cart, Category, Product, User } from '../models/Product';
+import mongoose, { Types } from 'mongoose';
+import { ProductCart } from '../interfaces/Cart';
+import { UserType } from '../interfaces/User';
+import Category from '../models/Category';
+import { Cart, Order, Product, User } from '../models/Product';
 import { comparePassword, hashPassword } from '../utils/hashPassword';
 import { createToken } from '../utils/jwt';
-import mongoose, { Types } from 'mongoose';
-import { UserType } from '../interfaces/User';
-import { ProductCart } from '../interfaces/Cart';
 type QueryParam = {
   search?: string;
   filter?: string;
@@ -44,7 +45,8 @@ const ProductController = {
       const products = await Product.find(query)
         .sort(sortOptions)
         .skip((Number(page) - 1) * Number(limit))
-        .limit(Number(limit));
+        .limit(Number(limit))
+        .populate('category');
       const total = await Product.countDocuments(query);
 
       res.json({
@@ -69,6 +71,13 @@ const ProductController = {
   Create: async (req: Request, res: Response) => {
     try {
       const data = await Product.create(req.body);
+      await Category.findByIdAndUpdate(
+        data.category,
+        {
+          $push: { products: data._id },
+        },
+        { new: true }
+      );
       res.status(200).json({
         res: data,
       });
@@ -79,6 +88,13 @@ const ProductController = {
   Update: async (req: Request, res: Response) => {
     try {
       const data = await Product.findByIdAndUpdate(req.params.id, req.body);
+      await Category.findByIdAndUpdate(
+        data?.category,
+        {
+          $push: { products: data?.id },
+        },
+        { new: true }
+      );
       res.status(200).json({
         res: data,
       });
@@ -100,7 +116,10 @@ const ProductController = {
 const CategoryController = {
   Query: async (req: Request, res: Response) => {
     try {
-      const data = await Category.find();
+      const data = await Category.find().populate({
+        path: 'products',
+        select: '_id',
+      });
       res.status(200).json({
         res: data,
       });
@@ -110,7 +129,7 @@ const CategoryController = {
   },
   Get_One: async (req: Request, res: Response) => {
     try {
-      const data = await Category.findById(req.params.id);
+      const data = await Category.findById(req.params.id).populate('products');
       res.status(200).json({
         res: data,
       });
@@ -146,6 +165,24 @@ const CategoryController = {
       });
     } catch (error) {
       console.log(error);
+    }
+  },
+  ProductsByCategory: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const categoryId = req.params.id;
+
+      const category = await Category.findById(categoryId).populate('products');
+
+      const productId = category?.products;
+      const products = await Product.find({ _id: { $in: productId } });
+
+      res.json({ res: products });
+    } catch (error) {
+      next(error);
     }
   },
 };
@@ -217,6 +254,7 @@ const CartController = {
       );
 
       const cartData = {
+        cartId: cart?.id,
         products: cart?.products.map((item) => ({
           userProduct: item.userProduct._id,
           quantity: item.quantity,
@@ -358,10 +396,72 @@ const CartController = {
       next(error);
     }
   },
+  removeCart: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const data = await Cart.findByIdAndDelete(req.params.id);
+      if (data) {
+        res.status(200).json({
+          message: 'Remove cart success',
+        });
+      }
+    } catch (error) {
+      next(error);
+    }
+  },
+};
+const OrderController = {
+  GetAllOrder: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const data = await Order.find();
+
+      res.status(200).json({
+        res: data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  AddNewOrder: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const body = req.body;
+      const order = new Order(body);
+      const checkOrder = await order.save();
+      res.status(200).json({
+        message: 'Order success',
+        res: checkOrder,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  GetOrder: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const order = await Order.findById(id).exec();
+
+      res.status(200).json({
+        res: order,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  RemoveOrder: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await Order.findByIdAndDelete(req.params.id);
+
+      res.status(200).json({
+        message: 'Delete order success',
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 export {
-  ProductController,
-  CategoryController,
-  UserController,
   CartController,
+  CategoryController,
+  OrderController,
+  ProductController,
+  UserController,
 };

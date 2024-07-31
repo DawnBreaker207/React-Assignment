@@ -2,6 +2,7 @@ import { Button } from "antd"
 import { Link } from "react-router-dom"
 import { userProduct } from "../../../contexts/productContext"
 import { Product } from "../../../common/types/product"
+import { formatCurrency } from "../../../utils/formatCurrency"
 
 const ProductList = () => {
   const { state, deleteProduct } = userProduct()
@@ -25,9 +26,9 @@ const ProductList = () => {
           <tr key={index._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 [&>*]:text-center">
             <td className="px-6 py-4">{index._id}</td>
             <td className="px-6 py-4">{index.title}</td>
-            <td className="px-6 py-4">{index.price}</td>
+            <td className="px-6 py-4">{formatCurrency(index.price)}</td>
             <td className="text-center w-[250px]">{index.thumbnail ? <img src={index.thumbnail} alt={index.description} /> : 'Updating'}</td>
-            <td className="px-6 py-4">{index.category.name}</td>
+            <td className="px-6 py-4">{index.category?.name}</td>
             <td className="px-6 py-4">{index.description}</td>
             <td>
               <div className="flex flex-row justify-center gap-2">

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Product } from "../../common/types/product"
 import instance from "../../configs/axios"
 import { Link } from "react-router-dom"
+import { formatCurrency } from "../../utils/formatCurrency"
 
 const BestSell = () => {
   const [product, setProduct] = useState<Product[]>([])
@@ -53,7 +54,7 @@ const BestSell = () => {
                       <p className="text-[#777777]">{index.description}</p>
                       <div className="flex flex-row gap-[10px] sell-price">
                         <p className="line-through" >110000$</p>
-                        <p className="sale-price">{index.price}</p>
+                        <p className="sale-price">{formatCurrency(index.price)}</p>
                       </div>
                     </span>
                   </div>

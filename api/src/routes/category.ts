@@ -10,6 +10,10 @@ const categoryRouter = Router();
 
 categoryRouter.get('/', CategoryController.Query);
 categoryRouter.get('/:id', CategoryController.Get_One);
+categoryRouter.get(
+  '/product-by-category/:id',
+  CategoryController.ProductsByCategory
+);
 
 // categoryRouter.use(checkAuth, checkIsAdmin);
 categoryRouter.delete('/:id', CategoryController.Delete);

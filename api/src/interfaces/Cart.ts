@@ -8,6 +8,13 @@ export interface ProductType {
   description: string;
   price: number;
 }
+export interface CategoryType {
+  _id?: Types.ObjectId;
+  name: string;
+  description: string;
+  thumbnail: string;
+  products: Types.ObjectId[];
+}
 export interface ProductCart {
   userProduct: ProductType;
   quantity: number;

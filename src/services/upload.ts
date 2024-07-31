@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const { VITE_CLOUD_NAME, VITE_UPLOAD_PRESET } = import.meta.env;
-const UploadImage = async (dataInput: string) => {
+const UploadImage = async (dataInput: File) => {
   try {
     const formData = new FormData();
     formData.append('file', dataInput);
@@ -10,8 +10,6 @@ const UploadImage = async (dataInput: string) => {
       `https://api.cloudinary.com/v1_1/${VITE_CLOUD_NAME}/image/upload`,
       formData
     );
-    console.log(data);
-
     return data.secure_url;
   } catch (error) {
     console.log(error);

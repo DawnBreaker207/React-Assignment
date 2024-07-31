@@ -3,6 +3,7 @@ import { Cart_Add, Star } from "../../common/icons"
 import { Product } from "../../common/types/product"
 import { useAuth } from "../../contexts/authContext"
 import { useCart } from "../../contexts/cartContext"
+import { formatCurrency } from "../../utils/formatCurrency"
 
 
 const DetailProduct = ({ ...props }: Product) => {
@@ -39,7 +40,7 @@ const DetailProduct = ({ ...props }: Product) => {
             <p className="detail-desc w-[500px]">{props.description}</p>
             <div className="detail-price">
               <div className="detail-sale-price">$125.00 <span>50%</span></div>
-              <div className="detail-origin-price">$ {props.price}</div>
+              <div className="detail-origin-price">$ {formatCurrency(props.price)}</div>
             </div>
             <div className="detail-action">
               <div className="detail-quantity">

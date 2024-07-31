@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { PRODUCT_TAG } from "../../common/data"
 import { Arrow_Circle, Price_Renge, Thumb_Product } from "../../common/icons"
 import { Product } from "../../common/types/product"
@@ -7,56 +7,32 @@ import instance from "../../configs/axios"
 import { useCategory } from "../../contexts/categoryContext"
 import { formatCurrency } from "../../utils/formatCurrency"
 
-const ProductList = () => {
+const ListByCategory = () => {
+
   const [product, setProduct] = useState<Product[]>([])
-
-  const [selectCate, setSelectCate] = useState<string[]>([])
-  const [sortBy, setSortBy] = useState<string>("")
   const { state } = useCategory()
-
-
-
-  const queryParams = new URLSearchParams(location.search).get("search") || "";
-
+  const { id } = useParams()
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const params: any = {
-          limit: 40,
-          category: selectCate.join(','),
-          sort: sortBy,
-
-        }
-        const { data } = await instance.get("/products", { params })
+    (async () => {
+      const { data } = await instance.get(`/categories/product-by-category/${id}`)
+      if (data.res) {
         setProduct(data.res)
 
-      } catch (error) {
-        console.log(error);
       }
+    })()
+  }, [])
 
-    }
-    fetchProduct()
-  }, [selectCate, sortBy, queryParams])
 
-  const handleCheckbox = (id: string) => {
-    setSelectCate((prevSelected) => {
-      const newSelected = prevSelected.includes(id)
-        ? prevSelected.filter(categoryId => categoryId !== id) : [...prevSelected, id]
-      return newSelected
-    })
-  }
-  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortBy(event.target.value)
-  }
+
+
   return (
     <section className="bg-list">
       <div className="list-color-product">
         <div className="max-w-6xl mx-auto">
-          <h3 className="pt-[76px] pb-[68px] font-bold text-[30px] text-[#505F4E]">Töpfe & Behälter</h3>
         </div>
       </div>
       <div className="max-w-6xl mx-auto">
-        <div className="flex flex-row justify-between mt-[30px] mb-[130px]">
+        <div className="flex flex-row justify-between pt-[30px] pb-[130px]">
           {PRODUCT_TAG.map((index) => (
             <div key={index.id} className="flex flex-row items-center gap-2 bg-[#D2E8CD] py-[8px] pl-[6px] pr-[16px] rounded-md">
               <img src={index.image} alt="" />
@@ -71,7 +47,7 @@ const ProductList = () => {
           <div className="">
             <div className="flex flex-row mb-[44px] gap-8">
               <div className="text-[18px]">Sort By:
-                <select name="" id="" value={sortBy} onChange={handleSortChange} className="ml-[14px] w-[200px] text-[#BDBDBD] border-2 px-[16px] py-[9px] rounded-lg">
+                <select name="" id="" className="ml-[14px] w-[200px] text-[#BDBDBD] border-2 px-[16px] py-[9px] rounded-lg">
                   <option value="">
                     Newest
                   </option>
@@ -137,7 +113,7 @@ const ProductList = () => {
               ))} */}
               {state.categories.slice(0, 10).map((index) => (
                 <div key={index._id} className="flex flex-row gap-[7px] ">
-                  <input type="checkbox" name="" id={index._id} checked={selectCate.includes(index._id as string)} onChange={() => handleCheckbox(index._id as string)} />
+                  <input type="checkbox" name="" />
                   <span>{index.name}</span>
                 </div>
               ))}
@@ -183,4 +159,4 @@ const ProductList = () => {
   )
 }
 
-export default ProductList
+export default ListByCategory

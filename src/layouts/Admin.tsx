@@ -17,6 +17,7 @@ const LayoutAdmin = () => {
           <NavLink to={"/admin/products/add"} className=" bg-blue-600 rounded-lg inline-block text-white font-bold">Add Product</NavLink>
           <NavLink to={"/admin/categories"} className=" bg-blue-600 rounded-lg inline-block text-white font-bold">Categories</NavLink>
           <NavLink to={"/admin/categories/add"} className=" bg-blue-600 rounded-lg inline-block text-white font-bold">Add Category</NavLink>
+          <NavLink to={"/admin/orders"} className=" bg-blue-600 rounded-lg inline-block text-white font-bold">Order</NavLink>
           <Button onClick={Logout} danger type="primary">Log Out</Button>
         </div>
         <Outlet />

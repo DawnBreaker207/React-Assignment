@@ -4,7 +4,7 @@ import instance from '../configs/axios';
 const Get_Cart = async (userId: string) => {
   try {
     const { data } = await instance.get(`cart/${userId}`);
-    return data.res.products;
+    return data.res;
   } catch (error) {
     console.log(error);
   }
@@ -46,6 +46,15 @@ const Remove_From_Cart = async (dataInput: CartTypeInput) => {
     console.log(error);
   }
 };
+const Remove_Cart = async (id: string) => {
+  console.log(id);
+
+  try {
+    await instance.delete(`/cart/${id}`);
+  } catch (error) {
+    console.log(error);
+  }
+};
 const Increase_Quantity = async (dataInput: CartTypeInput) => {
   try {
     await instance.post(`/cart/increase`, {
@@ -73,4 +82,5 @@ export {
   Increase_Quantity,
   Remove_From_Cart,
   Update_Cart,
+  Remove_Cart,
 };

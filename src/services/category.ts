@@ -18,6 +18,16 @@ const GetOneCategory = async (id: string | undefined) => {
     console.log(error);
   }
 };
+const GetProductByCategory = async (id: string | undefined) => {
+  try {
+    const { data } = await instance.get(
+      `/categories/product-by-category/${id}`
+    );
+    return data.res;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const CreateCategory = async (dataInput: Category) => {
   try {
@@ -49,4 +59,5 @@ export {
   GetCategory,
   GetOneCategory,
   UpdateCategory,
+  GetProductByCategory,
 };

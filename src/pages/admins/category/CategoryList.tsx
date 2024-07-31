@@ -12,6 +12,7 @@ const CategoryList = () => {
         <tr>
           <th className="px-6 py-3">Id</th>
           <th className="px-6 py-3">Name</th>
+          <th className="px-6 py-3">Thumbnail</th>
           <th className="px-6 py-3">Description</th>
           <th className="px-6 py-3">Action</th>
 
@@ -22,6 +23,7 @@ const CategoryList = () => {
           <tr key={index._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 [&>*]:text-center">
             <td className="px-6 py-4">{index._id}</td>
             <td className="px-6 py-4">{index.name}</td>
+            <td className="text-center w-[250px]">{index.thumbnail ? <img src={index.thumbnail} alt={index.description} /> : 'Updating'}</td>
             <td className="px-6 py-4">{index.description}</td>
             <td>
               <div className="flex flex-row justify-center gap-2">

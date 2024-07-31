@@ -11,6 +11,7 @@ cartRouter.put(
   CartController.updateProductQuantity
 );
 cartRouter.delete('/remove-cart', CartController.removeFromCart);
+cartRouter.delete('/:id', CartController.removeCart);
 cartRouter.post('/increase', CartController.increaseProductQuantity);
 cartRouter.post('/decrease', CartController.decreaseProductQuantity);
 cartRouter.use(checkAuth);

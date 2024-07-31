@@ -8,12 +8,13 @@ import { userProduct } from "../../../contexts/productContext"
 import { GetOneProduct } from "../../../services/product"
 import productSchema from "../../../validations/productSchema"
 import { Button } from "antd"
+import { UploadImage } from "../../../services/upload"
 
 const ProductEdit = () => {
   const [thumbnailUrl, setThumbnailUrl] = useState(null)
   const { editProduct } = userProduct()
   const { state } = useCategory()
-  const { register, formState: { errors }, handleSubmit, reset } = useForm<Product>({ resolver: zodResolver(productSchema) })
+  const { register, formState: { errors }, handleSubmit, reset, setValue } = useForm<Product>({ resolver: zodResolver(productSchema) })
   const { id } = useParams()
   useEffect(() => {
     if (id) {
@@ -24,15 +25,29 @@ const ProductEdit = () => {
       })()
     }
   }, [id, reset])
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0]
+      try {
+        const thumbnailUrl = await UploadImage(file)
+        setThumbnailUrl(thumbnailUrl)
+        setValue('thumbnail', thumbnailUrl)
+      }
+      catch (error) {
+        console.log(error);
+
+      }
+    }
+  }
   const handleSubmitForm = async (res: Product) => {
     try {
-      const _id = id
+      const updateProduct = { ...res }
+      const _id = id;
       if (_id) {
-        editProduct(_id, res)
+        editProduct(_id, updateProduct)
       }
     } catch (error) {
       console.log(error);
-
     }
   }
   return (
@@ -67,7 +82,7 @@ const ProductEdit = () => {
         </div>
         <div className="mb-3">
           <label className="form-label" htmlFor="thumbnail">Thumbnail</label>
-          <input type="file" placeholder="Link" {...register("thumbnail")} />
+          <input type="file" placeholder="Link" onChange={handleFileChange} />
           {thumbnailUrl && (
             <img src={thumbnailUrl} alt="Product Thumbnail" style={{ maxWidth: "200px", marginTop: "10px" }} />
           )}

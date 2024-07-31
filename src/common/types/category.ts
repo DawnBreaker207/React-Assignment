@@ -1,9 +1,12 @@
 import { Dispatch } from 'react';
+import { Product } from './product';
 
 export interface Category {
   _id?: string | undefined;
   name: string;
   description?: string;
+  thumbnail: string;
+  products: Product[];
 }
 
 export interface StateCategory {

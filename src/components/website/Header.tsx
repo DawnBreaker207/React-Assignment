@@ -1,30 +1,28 @@
 import { ShoppingCartOutlined } from '@ant-design/icons'
 import { Badge } from "antd"
-import { useState } from "react"
+import { useForm } from 'react-hook-form'
 import { NavLink, useNavigate } from "react-router-dom"
 import { HEADER_NAV } from "../../common/data"
 import { Arrow_Back, Search, User } from "../../common/icons"
 import { useCart } from "../../contexts/cartContext"
 
 const Header = () => {
-  const [searchTerm, setSearchTerm] = useState("")
   const navigate = useNavigate()
   const { state } = useCart()
-  console.log(state);
+  const { register, handleSubmit } = useForm()
 
-  const totalItem = state.reduce((total, item) => total + item.quantity, 0)
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (searchTerm.trim()) {
-      navigate(`/list?search=${encodeURIComponent(searchTerm)}`, { replace: true })
-    }
+  const totalItem = state.cartItems.reduce((total, item) => total + item.quantity, 0)
+  const onSubmit = (data: any) => {
+    const { keywords } = data
+    navigate(`/search?keyword=${keywords}`)
+
   }
   return (
     <header>
       <div className="container md:max-w-6xl mx-auto">
         <div className="header-tool flex justify-end" >
-          <form action="" className="header-search" onSubmit={handleSearch}>
-            <input type="text" placeholder="Suchen Sie nach Produkten, Marken und mehr" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+          <form action="" className="header-search" onSubmit={handleSubmit(onSubmit)}>
+            <input type="text" placeholder="Suchen Sie nach Produkten, Marken und mehr" {...register('keywords')} />
             <button type="submit" >
               <img src={Search} alt="" />
             </button>
